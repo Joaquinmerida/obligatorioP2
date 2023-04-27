@@ -15,6 +15,7 @@ public class PrimerObligatorioP2 {
         String ingresoMenu = input.next();
         input.nextLine();
         String ganador = "";
+        String saltoGatitos = "";
         int contadorTurnos = 0;
         ArrayList<Perfiles> personas = new ArrayList<>();
         String[][] mat = new String[6][6];
@@ -86,7 +87,10 @@ public class PrimerObligatorioP2 {
                     MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
 
                     MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
-                    
+                    saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
+                    System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "rojo");
+
                     cajaRoja[0]--;
                 } else {
                     System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
@@ -100,8 +104,12 @@ public class PrimerObligatorioP2 {
                         coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
                     }
                     MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "azul");
-                    
+
                     MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
+                    saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
+                    System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
+
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "azul");
                     
                     cajaAzul[0]--;
                 }
@@ -119,7 +127,7 @@ public class PrimerObligatorioP2 {
                 System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaRoja[0]);
                 System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaAzul[0]);
 
-                if (contadorTurnos == 3) {
+                if (contadorTurnos == 10) {
                     finJuego = true;
                 }
                 contadorTurnos++;

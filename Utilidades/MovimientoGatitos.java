@@ -1,6 +1,5 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+
  */
 package primerobligatoriop2.Utilidades;
 
@@ -45,64 +44,147 @@ public class MovimientoGatitos {
         return hayGatito;
     }
 
-    static public void seMueve(int xNuevoGatito, int yNuevoGatito, String[][] matriz) {
-        int counter = 0;
-        String[][] mat = new String[6][6];
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 6; j++) {
-                mat[i][j] = "ok";
-            }
-        }
+    static public String seMueve(int xCoordenada, int yCoordenada, String[][] matriz) {
 
-        if (matriz.length > xNuevoGatito + 1) {
-            if (matriz[0].length > yNuevoGatito + 1) {
-                //esta en el medio
-                if (yNuevoGatito == 0) {
-                    //esta a la izquierda
-                    if (xNuevoGatito == 0) {
-                        //esta arriba a la iz
+        String resp = "";
+
+        if (xCoordenada == 0) {
+            // PRIMER FILA
+            if (yCoordenada == 0) {
+                //PRIMER FILA PRIMER COLUMNA
+                System.out.println("Cayo en 0 0");
+                for (int i = xCoordenada; i <= (xCoordenada + 1); i++) {
+                    for (int j = yCoordenada; j <= yCoordenada + 1; j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
                     }
                 }
-                if (xNuevoGatito == 0) {
-                }
-
-            } else {
-                //esta contra la derecha
             }
-
+            if (yCoordenada == matriz[0].length - 1) {
+                //PRIMER FILA ULTIMA COLUMNA
+                System.out.println("Cayo en 0 5");
+                for (int i = xCoordenada; i <= (xCoordenada + 1); i++) {
+                    for (int j = (yCoordenada - 1); j <= yCoordenada; j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+            }
+            if (yCoordenada != 0 && yCoordenada != matriz[0].length - 1) {
+                //PRIMER FILA CUALQUIER COLUMNA
+                System.out.println("Cayo en 0 y cualquier otro");
+                for (int i = xCoordenada; i <= (xCoordenada + 1); i++) {
+                    for (int j = (yCoordenada - 1); j <= (yCoordenada + 1); j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (xCoordenada == 5) {
+            //ULTIMA FILA
+            if (yCoordenada == 0) {
+                //ULTIMA FILA PRIMER COLUMNA
+                System.out.println("Cae en el max X y en y 0");
+                for (int i = (xCoordenada - 1); i <= xCoordenada; i++) {
+                    for (int j = yCoordenada; j <= (yCoordenada + 1); j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+            } else if (yCoordenada == matriz[0].length - 1) {
+                //ULTIMA FILA ULTIMA COLUMNA
+                System.out.println("Cae en el max X y en y max y");
+                for (int i = (xCoordenada - 1); i <= xCoordenada; i++) {
+                    for (int j = (yCoordenada - 1); j <= yCoordenada; j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+            } else {
+                //ULTIMA FILA CUALQUIER COLUMNA
+                for (int i = (xCoordenada - 1); i <= xCoordenada; i++) {
+                    for (int j = (yCoordenada - 1); j <= (yCoordenada + 1); j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+            }
         } else {
-            if (matriz[0].length >= yNuevoGatito + 1) {
-                //esta abajo en el medio
-            } else {
-                //esta abajo contra la derecha
-            }
-
-        }
-
-        for (int i = xNuevoGatito - 1; i <= xNuevoGatito + 1; i++) {
-            for (int j = yNuevoGatito - 1; j <= yNuevoGatito + 1; j++) {
-                if (matriz[i][j].charAt(0) == 'g' && (i != 1 && j != 1)) {
-                    mat[i][j] = "A" + i + " " + j;
-                    counter++;
+            //CUALQUIER FILA
+            if (yCoordenada == 0) {
+                //cualquier fila contra la iz
+                for (int i = (xCoordenada - 1); i <= (xCoordenada + 1); i++) {
+                    for (int j = yCoordenada; j <= (yCoordenada + 1); j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
                 }
-            }
-        }
+            } else if (yCoordenada == matriz[0].length - 1) {
+                //cualquier fila contra la derecha
+                for (int i = (xCoordenada - 1); i <= (xCoordenada + 1); i++) {
+                    for (int j = (yCoordenada - 1); j <= yCoordenada; j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
 
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                System.out.println(mat[i][j] + " ");
+            } else {
+                //cualquier otra
+                for (int i = (xCoordenada - 1); i <= (xCoordenada + 1); i++) {
+                    for (int j = (yCoordenada - 1); j <= (yCoordenada + 1); j++) {
+                        if (!(i == xCoordenada && j == yCoordenada)) {
+                            if (matriz[i][j].charAt(0) == matriz[xCoordenada][yCoordenada].charAt(0)) {
+                                resp += i + "-" + j + "/";
+                            }
+                        }
+                    }
+                }
+
             }
-            System.out.println();
         }
-        System.out.println(counter);
+        return resp;
     }
 
-    /*
+    static public void saltoGato(String coordenadasGatosQueSeMueven, int xCoordenada, int yCoordenada, String[][] matriz, String color) {
+
+        
+        for (int i = 0; i < coordenadasGatosQueSeMueven.length(); i = i + 4) {
+            //comparar las filas y las columnas
+            // cambiar las coordenadas y borrar donde estaba el gato
+        }
+    }
+}
+
+
+/*
     
     static public void boolean caeAfuera(){
     }
     
     static public  void boolean gatoMovido(){
     }
-     */
-}
+ */
