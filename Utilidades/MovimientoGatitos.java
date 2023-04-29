@@ -44,8 +44,25 @@ public class MovimientoGatitos {
         return hayGatito;
     }
 
-    static public String seMueve(int xCoordenada, int yCoordenada, String[][] matriz) {
+    static public void agregaGatitoACaja(String color, int[] caja) {
+        if (color.contains("rojo")) {
+            caja[0] = caja[0] + 1;
+        }
+        if (color.contains("azul")) {
+            caja[0] = caja[0] + 1;
+        }
+    }
 
+    static public void agregaGatoACaja(String color, int[] caja) {
+        if (color.contains("rojo")) {
+            caja[1] = caja[1] + 1;
+        }
+        if (color.contains("azul")) {
+            caja[1] = caja[1] + 1;
+        }
+    }
+
+    static public String seMueve(int xCoordenada, int yCoordenada, String[][] matriz) {
         String resp = "";
 
         if (xCoordenada == 0) {
@@ -169,22 +186,57 @@ public class MovimientoGatitos {
         return resp;
     }
 
-    static public void saltoGato(String coordenadasGatosQueSeMueven, int xCoordenada, int yCoordenada, String[][] matriz, String color) {
+    static public int[] saltoGato(String coordenadasGatosQueSeMueven, int xCoordenada, int yCoordenada, String[][] matriz, String color) {
+        int diferenciaFila = 0;
+        int diferenciaColumna = 0;
+        int[] sumaGatosEnCaja = {0, 0};
 
-        
-        for (int i = 0; i < coordenadasGatosQueSeMueven.length(); i = i + 4) {
-            //comparar las filas y las columnas
-            // cambiar las coordenadas y borrar donde estaba el gato
+        for (int i = 0; i <= (coordenadasGatosQueSeMueven.length() - 4); i = i + 4) {
+
+            if (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i)) > xCoordenada) {
+                diferenciaFila = 1;
+            } else if (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i)) < xCoordenada) {
+                diferenciaFila = -1;
+            } else {
+                diferenciaFila = 0;
+            }
+
+            if (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) > yCoordenada) {
+                diferenciaColumna = 1;
+            } else if (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) < yCoordenada) {
+                diferenciaColumna = -1;
+            } else {
+                diferenciaColumna = 0;
+            }
+
+            Boolean filaNo = (Character.getNumericValue((coordenadasGatosQueSeMueven.charAt(i))) + diferenciaFila) < 0 || (Character.getNumericValue((coordenadasGatosQueSeMueven.charAt(i))) + diferenciaFila) >= matriz.length;
+            Boolean columnaNo = (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) + diferenciaColumna) < 0 || (Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) + diferenciaColumna) >= matriz[0].length;
+
+            if (!filaNo && !columnaNo && matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i)) + diferenciaFila][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) + diferenciaColumna].charAt(0) !=  'g') {
+                matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i)) + diferenciaFila][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2)) + diferenciaColumna] = "g" + color;
+                matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))] = "0";
+            } else {
+                if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("rojo")) {
+                    sumaGatosEnCaja[0]= sumaGatosEnCaja[0] + 1;
+                    System.out.println("mas un gato rojo");
+                }
+
+                if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("azul")) {
+                    sumaGatosEnCaja[1]++;
+                    System.out.println("mas un gato azul");
+                }
+                matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))] = "0";
+            }
         }
+        System.out.println(sumaGatosEnCaja[0] + " " + sumaGatosEnCaja[1]);
+        return sumaGatosEnCaja;
     }
 }
 
-
 /*
-    
-    static public void boolean caeAfuera(){
-    }
-    
-    static public  void boolean gatoMovido(){
-    }
- */
+falta determinar como agragamos los gatos que caen afuera a las respectivas cajas y checkear los colores y cambios de colores de las fichas en la mesa
+definir forma de ganar
+login
+eleccion de jugador en la lista de jugadores
+registro de jugadores
+*/

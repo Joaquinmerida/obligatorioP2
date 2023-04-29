@@ -89,7 +89,7 @@ public class PrimerObligatorioP2 {
                     MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
-                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "rojo");
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "azul");
 
                     cajaRoja[0]--;
                 } else {
@@ -109,8 +109,9 @@ public class PrimerObligatorioP2 {
                     saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
 
-                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "azul");
-                    
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "rojo");
+
+
                     cajaAzul[0]--;
                 }
 
