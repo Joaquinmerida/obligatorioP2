@@ -5,6 +5,19 @@ import primerobligatoriop2.Utilidades.*;
 
 public class PrimerObligatorioP2 {
 
+    public static Boolean hayGanador() {
+        
+        Boolean ganador = false;
+        
+        
+        
+        
+        
+        
+        
+        return ganador;
+    }
+
     public static void main(String[] args) {
         System.out.println("Presiona R para registrar jugador");
         System.out.println("Presiona S para jugar modo Simple");
@@ -19,8 +32,7 @@ public class PrimerObligatorioP2 {
         int contadorTurnos = 0;
         ArrayList<Perfiles> personas = new ArrayList<>();
         String[][] mat = new String[6][6];
-        int[] cajaRoja = {8, 0};
-        int[] cajaAzul = {8, 0};
+        int[] cajaJugadores = {8, 0, 8, 0};
         boolean finJuego = false;
         for (int i = 0; i < mat.length; i++) {
             for (int j = 0; j < mat[0].length; j++) {
@@ -63,6 +75,7 @@ public class PrimerObligatorioP2 {
         }
         if (ingresoMenu.charAt(0) == 'S') {
             while (!finJuego) {
+                /*
                 if (cajaRoja[0] == 0 || cajaAzul[0] == 0) {
                     finJuego = true;
                     if (cajaRoja[0] == 0) {
@@ -73,6 +86,7 @@ public class PrimerObligatorioP2 {
                         System.out.println("\u001B[34m" + "GANO EL JUGADOR" + ganador + "!!!!!!!!!!!!!!!");
                     }
                 }
+                 */
                 if (contadorTurnos % 2 == 0) {
                     System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
                     String coordenadaX = input.next();
@@ -89,9 +103,8 @@ public class PrimerObligatorioP2 {
                     MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
-                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "azul");
-
-                    cajaRoja[0]--;
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
+                    cajaJugadores[0]--;
                 } else {
                     System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
                     String coordenadaX = input.next();
@@ -107,12 +120,10 @@ public class PrimerObligatorioP2 {
 
                     MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
                     saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat);
-                    System.out.println("--------------------------" + saltoGatitos + "-------------------------------");
 
-                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, "rojo");
+                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
 
-
-                    cajaAzul[0]--;
+                    cajaJugadores[2]--;
                 }
 
                 for (int i = 0; i < mat.length; i++) {
@@ -125,8 +136,8 @@ public class PrimerObligatorioP2 {
                     }
                     System.out.println();
                 }
-                System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaRoja[0]);
-                System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaAzul[0]);
+                System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
+                System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
 
                 if (contadorTurnos == 10) {
                     finJuego = true;
