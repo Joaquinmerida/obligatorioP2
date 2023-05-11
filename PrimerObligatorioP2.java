@@ -64,18 +64,25 @@ public class PrimerObligatorioP2 {
         if (ingresoMenu.charAt(0) == 'S') {
             while (!finJuego) {
                 if (contadorTurnos % 2 == 0) {
-
                     System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
                     String coordenadaX = input.next();
                     int coordenadaY = input.nextInt();
                     int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                    while (MovimientoGatitos.ingresosCorrectos(coordenadaX, coordenadaY)) {
+                    String letrasCheck = "ABCDEFabcdefg";
+                    Boolean xBien = letrasCheck.contains(coordenadaX);
+                    Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                    System.out.println(xBien + " " + yBien);
+                    System.out.println(coordenadaX);
+                    while (!(xBien && yBien)) {
                         System.out.println("Coordenadas incorrectas");
                         System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
                         coordenadaX = input.next();
                         coordenadaY = input.nextInt();
                         coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                        xBien = letrasCheck.contains(coordenadaX);
+                        yBien = (coordenadaY >= 0 && coordenadaY <= 5);
                     }
+                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
 
                     while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
                         System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
@@ -93,6 +100,21 @@ public class PrimerObligatorioP2 {
                     String coordenadaX = input.next();
                     int coordenadaY = input.nextInt();
                     int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                    String letrasCheck = "ABCDEFabcdefg";
+                    Boolean xBien = letrasCheck.contains(coordenadaX);
+                    Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                    System.out.println(xBien + " " + yBien);
+                    System.out.println(coordenadaX);
+                    while (!(xBien && yBien)) {
+                        System.out.println("Coordenadas incorrectas");
+                        System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
+                        coordenadaX = input.next();
+                        coordenadaY = input.nextInt();
+                        coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                        xBien = letrasCheck.contains(coordenadaX);
+                        yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                    }
+                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
                     while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
                         System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
                         coordenadaX = input.next();
@@ -140,10 +162,27 @@ public class PrimerObligatorioP2 {
                         System.out.println("Ingrese -G- para colocar un gato");
                         inputJugador = input.next();
                     } else {
+
                         System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
                         String coordenadaX = input.next();
                         int coordenadaY = input.nextInt();
                         int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                        String letrasCheck = "ABCDEFabcdefg";
+                        Boolean xBien = letrasCheck.contains(coordenadaX);
+                        Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        System.out.println(xBien + " " + yBien);
+                        System.out.println(coordenadaX);
+                        while (!(xBien && yBien)) {
+                            System.out.println("Coordenadas incorrectas");
+                            System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
+                            coordenadaX = input.next();
+                            coordenadaY = input.nextInt();
+                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                            xBien = letrasCheck.contains(coordenadaX);
+                            yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        }
+                        coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+
                         while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
                             System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
                             coordenadaX = input.next();
@@ -163,6 +202,22 @@ public class PrimerObligatorioP2 {
                         String coordenadaX = input.next();
                         int coordenadaY = input.nextInt();
                         int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                        String letrasCheck = "ABCDEFabcdefg";
+                        Boolean xBien = letrasCheck.contains(coordenadaX);
+                        Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        System.out.println(xBien + " " + yBien);
+                        System.out.println(coordenadaX);
+                        while (!(xBien && yBien)) {
+                            System.out.println("Coordenadas incorrectas");
+                            System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
+                            coordenadaX = input.next();
+                            coordenadaY = input.nextInt();
+                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                            xBien = letrasCheck.contains(coordenadaX);
+                            yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        }
+                        coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+
                         while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
                             System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
                             coordenadaX = input.next();
@@ -183,6 +238,22 @@ public class PrimerObligatorioP2 {
                         String coordenadaX = input.next();
                         int coordenadaY = input.nextInt();
                         int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                        String letrasCheck = "ABCDEFabcdefg";
+                        Boolean xBien = letrasCheck.contains(coordenadaX);
+                        Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        System.out.println(xBien + " " + yBien);
+                        System.out.println(coordenadaX);
+                        while (!(xBien && yBien)) {
+                            System.out.println("Coordenadas incorrectas");
+                            System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gato");
+                            coordenadaX = input.next();
+                            coordenadaY = input.nextInt();
+                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                            xBien = letrasCheck.contains(coordenadaX);
+                            yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                        }
+                        coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+
                         while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
                             System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gato");
                             coordenadaX = input.next();
@@ -197,7 +268,7 @@ public class PrimerObligatorioP2 {
                     }
 
                     Boolean finalPor8Gatos = false;
-                    if (cajaJugadores[0] == 0 && cajaJugadores[1] == 0) {
+                    if (cajaJugadores[0] < 8 && cajaJugadores[1] == 0) {
                         finalPor8Gatos = todoGatosGrandes(mat, "rojo");
                         if (!finalPor8Gatos) {
                             Boolean jugadaCorrecta = false;
@@ -207,6 +278,13 @@ public class PrimerObligatorioP2 {
                                 System.out.println("RA1 + coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
                                 System.out.println("RA2 + coordenadas= Quitar un gato de la colcha y guardarlo en la caja");
                                 String inputReglasAdicionales = input.next();
+
+                                String letrasCheck = "ABCDEFabcdefg";
+                                System.out.println("compara" + inputReglasAdicionales.substring(3, 4) + "numero" + Character.getNumericValue(inputReglasAdicionales.charAt(4)));
+                                Boolean xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
+                                Boolean yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
+                                System.out.println(xBien + " " + yBien);
+
                                 while ((!inputReglasAdicionales.contains("RA1") && !inputReglasAdicionales.contains("RA2")) || inputReglasAdicionales.length() != 5) {
                                     System.out.println("JUGADOR ROJO: te has quedado sin gatitos ni gatos.");
                                     System.out.println("Solo puedes usar las reglas adicionales");
@@ -214,8 +292,55 @@ public class PrimerObligatorioP2 {
                                     System.out.println("RA1+ coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
                                     System.out.println("RA2+ coordenadas = Quitar un gato de la colcha y guardarlo en la caja");
                                     inputReglasAdicionales = input.next();
+                                    xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
+                                    yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
                                 }
+
+                                //
+                                //
+                                //
+                                //
+                                //
+                                //
+                                //
+                                ///
+                                ///
+                                //
+                                while(!(xBien && yBien)) {
+                                    xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
+                                    yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
+                               
+                                    int[] coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
+                                    if (inputReglasAdicionales.contains("RA1")) {
+                                        if (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("rojo")) {
+                                            MovimientoGatitos.sacaGatitoConCoordenadas(mat, coordenadas[0], coordenadas[1]);
+                                            cajaJugadores[1]++;
+                                            jugadaCorrecta = true;
+                                            break jugadaCorrectaLoop;
+                                        } else {
+                                            System.out.println("No hay gatitos en esa posicion!!");
+                                        }
+                                    }
+                                    if (inputReglasAdicionales.contains("RA2")) {
+                                        if (MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("rojo")) {
+                                            MovimientoGatitos.sacaGatitoConCoordenadas(mat, coordenadas[0], coordenadas[1]);
+                                            cajaJugadores[1]++;
+                                            jugadaCorrecta = true;
+                                            break jugadaCorrectaLoop;
+                                        } else {
+                                            System.out.println("comparo: " + coordenadas[0] + "y " + coordenadas[1]);
+                                            System.out.println("No hay un gato en esa posicion");
+                                        }
+                                    }
+                                    xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
+                                    yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
+                                
+                                }
+
+                                /*
+                                
                                 int[] coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
+
                                 if (inputReglasAdicionales.contains("RA1")) {
                                     if (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("rojo")) {
                                         MovimientoGatitos.sacaGatitoConCoordenadas(mat, coordenadas[0], coordenadas[1]);
@@ -237,6 +362,7 @@ public class PrimerObligatorioP2 {
                                         System.out.println("No hay un gato en esa posicion");
                                     }
                                 }
+                                 */
                             }
                         } else {
                             System.out.println("Gano jugador rojo porque tiene 8 gatos en caja");

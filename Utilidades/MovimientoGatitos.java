@@ -51,39 +51,6 @@ public class MovimientoGatitos {
         return hayGato;
     }
 
-    static public boolean ingresosCorrectos(String coordenadaX, int coordenadaY) {
-        int x = 0;
-        Boolean xBien = false;
-        Boolean yBien = false;
-        Boolean ingresosValidos = false;
-        if (coordenadaX.charAt(0) == 'A' || coordenadaX.charAt(0) == 'a') {
-            x = 0;
-        } else if (coordenadaX.charAt(0) == 'B' || coordenadaX.charAt(0) == 'b') {
-            x = 1;
-        } else if (coordenadaX.charAt(0) == 'C' || coordenadaX.charAt(0) == 'c') {
-            x = 2;
-        } else if (coordenadaX.charAt(0) == 'D' || coordenadaX.charAt(0) == 'd') {
-            x = 3;
-        } else if (coordenadaX.charAt(0) == 'E' || coordenadaX.charAt(0) == 'e') {
-            x = 4;
-        } else if (coordenadaX.charAt(0) == 'F' || coordenadaX.charAt(0) == 'f') {
-            x = 5;
-        } else {
-            xBien = false;
-        }
-        if (x >= 0 || x <= 5) {
-            xBien = true;
-        }
-
-        if (coordenadaY >= 0 || coordenadaY <= 5) {
-            yBien = true;
-        }
-        if (xBien && yBien) {
-            ingresosValidos = true;
-        }
-
-        return ingresosValidos;
-    }
 
     static public void agregaGatitoACaja(String color, int[] caja) {
         if (color.contains("rojo")) {
