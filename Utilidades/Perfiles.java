@@ -7,11 +7,13 @@ public class Perfiles {
     public String nombre;
     public int edad;
     public String alias;
+    public int contadorPartidas;
 
-    public Perfiles(String nombre, int edad, String alias) {
+    public Perfiles(String nombre, int edad, String alias, int contadorPartidas) {
         this.nombre = nombre;
         this.edad = edad;
         this.alias = alias;
+        this.contadorPartidas = 0;
     }
 
     public void setNombre(String nombre) {
@@ -20,6 +22,23 @@ public class Perfiles {
 
     public String getNombre() {
         return nombre;
+    }
+
+    public int getContadorPartidas() {
+        return contadorPartidas;
+    }
+
+    public void setContadorPartidas(int contadorPartidas) {
+        this.contadorPartidas = contadorPartidas;
+    }
+
+    public static void sumarPartida(ArrayList<Perfiles> personas, String alias) {
+        for (Perfiles perfil : personas) {
+            if (perfil.getAlias().equals(alias)) {
+                perfil.setContadorPartidas(perfil.getContadorPartidas() + 1);
+                break;
+            }
+        }
     }
 
     public void setEdad(int edad) {
@@ -59,7 +78,7 @@ public class Perfiles {
         String alias = input.nextLine();
         if (Perfiles.esAliasUnico(personas, alias)) {
             System.out.println("no existe");
-            Perfiles nuevoPerfil = new Perfiles(nombre, edad, alias);
+            Perfiles nuevoPerfil = new Perfiles(nombre, edad, alias, 0);
             personas.add(nuevoPerfil);
             System.out.println("Jugador registrado con exito");
         } else {

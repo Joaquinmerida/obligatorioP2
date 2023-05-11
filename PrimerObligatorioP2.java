@@ -6,52 +6,62 @@ import primerobligatoriop2.Utilidades.*;
 public class PrimerObligatorioP2 {
 
     public static void main(String[] args) {
-        System.out.println("Presiona R para registrar jugador");
-        System.out.println("Presiona S para jugar modo Simple");
-        System.out.println("Presiona F para jugar modo Full");
-        System.out.println("Presiona D para generar un report de juego");
-        System.out.println("Presiona E para salir del juego");
-        Scanner input = new Scanner(System.in);
-        String ingresoMenu = input.next();
-        input.nextLine();
-        String ganador = "";
-        String saltoGatitos = "";
-        int contadorTurnos = 0;
+        Boolean saleDelSistema = false;
         ArrayList<Perfiles> personas = new ArrayList<>();
-        String[][] mat = new String[6][6];
-        int[] cajaJugadores = {8, 0, 8, 0};
-        boolean finJuego = false;
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                mat[i][j] = "0";
+        ArrayList<Perfiles> personasAuxiliar = new ArrayList<>();
+
+        while (!saleDelSistema) {
+            String ingresoMenu = "";
+            Scanner input = new Scanner(System.in);
+            ingresoMenu = mostrarMenu();
+            String ganador = "";
+            String saltoGatitos = "";
+            int seleccionJugador = 0;
+            int contadorTurnos = 0;
+            String[][] mat = new String[6][6];
+            int[] cajaJugadores = {8, 0, 8, 0};
+            boolean finJuego = false;
+            for (int i = 0; i < mat.length; i++) {
+                for (int j = 0; j < mat[0].length; j++) {
+                    mat[i][j] = "0";
+                }
             }
-        }
-        while (ingresoMenu.charAt(0) == 'D' || ingresoMenu.charAt(0) == 'R') {
-            /*
-            GENERAR PDF 
-            if(ingresoMenu.charAt(0) ==  'D'){
-            LISTA DE JUGADORES ORDENADA ALF
-            Y CANTIDAD DE PARTIDAS QUE JUGO CADA UNO
-            }
-             */
+
             if (ingresoMenu.charAt(0) == 'R') {
                 Perfiles.registrarJugador(personas);
-                System.out.println("Presiona R para registrar jugador");
-                System.out.println("Presiona S para jugar modo Simple");
-                System.out.println("Presiona F para jugar modo Full");
-                System.out.println("Presiona D para generar un report de juego");
-                System.out.println("Presiona E para salir del juego");
-                ingresoMenu = input.next();
-                input.nextLine();
             }
-        }
-        while (ingresoMenu.charAt(0) == 'S' || ingresoMenu.charAt(0) == 'F') {
             
-            if (personas.size() >= 2) {
+            if(ingresoMenu.charAt(0) == 'D'){
+            //reporte de pdf
+            
+            }
+            
+            if (ingresoMenu.charAt(0) == 'S') {
+                if (personas.size() >= 2) {
+                    for (int i = 0; i < personas.size(); i++) {
+                        System.out.println(i + " - " + personas.get(i).getNombre());
+                    }
+                    System.out.println("Jugador rojo, seleccione su perfil:");
+                    seleccionJugador = input.nextInt();
+                    while (!(seleccionJugador >= 0 && seleccionJugador < personas.size())) {
+                        System.out.println("Jugador rojo, seleccione su perfil");
+                        seleccionJugador = input.nextInt();
+                    }
+                    Perfiles.sumarPartida(personas, personas.get(seleccionJugador).getAlias());
+                    personasAuxiliar.addAll(personas);
+                    personasAuxiliar.remove(seleccionJugador);
+                    for (int i = 0; i < personasAuxiliar.size(); i++) {
+                        System.out.println(i + " - " + personasAuxiliar.get(i).getNombre());
+                    }
+                    System.out.println("Jugador azul, seleccione su perfil:");
+                    seleccionJugador = input.nextInt();
 
-                //modo simple y modo full
-                //MODO SIMPLE----------------------------------------------------------------------------------------------
-                if (ingresoMenu.charAt(0) == 'S') {
+                    while (!(seleccionJugador >= 0 && seleccionJugador < personasAuxiliar.size())) {
+                        System.out.println("Jugador azul, seleccione su perfil");
+                        seleccionJugador = input.nextInt();
+                    }
+                    Perfiles.sumarPartida(personas, personas.get(seleccionJugador).getAlias());
+
                     while (!finJuego) {
                         if (contadorTurnos % 2 == 0) {
                             //TURNO DE ROJO
@@ -135,17 +145,24 @@ public class PrimerObligatorioP2 {
                         System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
 
                         contadorTurnos++;
+
                         if (hayGanador(mat).length() > 1) {
                             System.out.println("Felicitaciones jugador " + hayGanador(mat).substring(0, 4) + " sos el ganador!!");
                             finJuego = true;
                         }
-                    }
-                }
 
-                if (ingresoMenu.charAt(0) == 'F') {
-                    //MODO FULL
-                    String inputJugador = "";
-                    finJuego = false;
+                    }
+                } else {
+                    System.out.println("No hay suficientes jugadores registrados");
+                }
+            }
+
+            if (ingresoMenu.charAt(0) == 'F') {
+                //MODO FULL
+                String inputJugador = "";
+                finJuego = false;
+
+                if (personas.size() >= 2) {
                     while (!finJuego) {
                         if (contadorTurnos % 2 == 0) {
                             //TURNO DE ROJO
@@ -257,7 +274,7 @@ public class PrimerObligatorioP2 {
 
                             Boolean finalPor8Gatos = false;
 
-                            if (cajaJugadores[0] < 8 && cajaJugadores[1] == 0) {
+                            if (cajaJugadores[0] == 0 && cajaJugadores[1] == 0) {
                                 finalPor8Gatos = todoGatosGrandes(mat, "rojo");
 
                                 if (!finalPor8Gatos) {
@@ -443,7 +460,7 @@ public class PrimerObligatorioP2 {
 
                             Boolean finalPor8Gatos = false;
 
-                            if (cajaJugadores[2] < 8 && cajaJugadores[3] == 0) {
+                            if (cajaJugadores[2] == 8 && cajaJugadores[3] == 0) {
                                 finalPor8Gatos = todoGatosGrandes(mat, "azul");
 
                                 if (!finalPor8Gatos) {
@@ -550,14 +567,18 @@ public class PrimerObligatorioP2 {
                         System.out.println(cajaJugadores[1] + " rojo");
                         System.out.println(cajaJugadores[3] + " azul");
                     }
+                } else {
+                    System.out.println("No hay suficientes jugadores registrados");
                 }
-
-            } else {
-                System.out.println("No hay suficientes jugadores registrados");
-                System.out.println("Registro de jugador nuevo:");
-                Perfiles.registrarJugador(personas);
             }
+
+            //termina todo sale del menu
+            if (ingresoMenu.charAt(0) == 'E') {
+                saleDelSistema = true;
+            }
+            ingresoMenu = "";
         }
+
     }
 
     public static String hayGanador(String[][] mat) {
@@ -755,6 +776,17 @@ public class PrimerObligatorioP2 {
         return color + " " + coordenadas;
     }
 
+    public static String mostrarMenu() {
+        System.out.println("Presiona R para registrar jugador");
+        System.out.println("Presiona S para jugar modo Simple");
+        System.out.println("Presiona F para jugar modo Full");
+        System.out.println("Presiona D para generar un report de juego");
+        System.out.println("Presiona E para salir del juego");
+        Scanner input = new Scanner(System.in);
+        String ingresoMenu = input.next();
+        return ingresoMenu;
+    }
+
     public static int tieneGatoGrande(String[][] mat, String[] coordenadas) {
         int contadorGatosGrandes = 0;
         for (int i = 0; i < coordenadas.length; i++) {
@@ -785,6 +817,3 @@ public class PrimerObligatorioP2 {
     }
 
 }
-
-
-// FALTA METER TODO EL CODIGO EN UN WHILE QUE HAGA QUE MIENTRAS NO SE PRESIONA LA "E" SIGA TRIGGEREANDO EL MENU. 
