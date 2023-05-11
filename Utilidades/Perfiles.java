@@ -1,13 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package primerobligatoriop2.Utilidades;
 
-/**
- *
- * @author joaqu
- */
+import java.util.*;
+
 public class Perfiles {
 
     public String nombre;
@@ -42,6 +36,35 @@ public class Perfiles {
 
     public String getAlias() {
         return alias;
+    }
+
+    public static boolean esAliasUnico(ArrayList<Perfiles> personas, String alias) {
+        for (Perfiles persona : personas) {
+            if (persona.getAlias().equals(alias)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void registrarJugador(ArrayList<Perfiles> personas) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Ingrese su nombre: ");
+        String nombre = input.nextLine();
+        System.out.println("Ingrese su edad: ");
+        int edad = input.nextInt();
+        input.nextLine();
+        System.out.println("Ingrese su alias: ");
+        String alias = input.nextLine();
+        if (Perfiles.esAliasUnico(personas, alias)) {
+            System.out.println("no existe");
+            Perfiles nuevoPerfil = new Perfiles(nombre, edad, alias);
+            personas.add(nuevoPerfil);
+            System.out.println("Jugador registrado con exito");
+        } else {
+            System.out.println("Ese alias ya esta registrado");
+        }
     }
 
 }

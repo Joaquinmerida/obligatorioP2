@@ -77,7 +77,7 @@ public class MovimientoGatitos {
         }
     }
 
-    static public void sacaGatitoConCoordenadas(String[][] mat, int coordenadaX, int coordenadaY) {
+    static public void sacaConCoordenadas(String[][] mat, int coordenadaX, int coordenadaY) {
         mat[coordenadaX][coordenadaY] = "0";
     }
 
