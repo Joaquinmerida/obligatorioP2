@@ -2,6 +2,8 @@ package primerobligatoriop2;
 
 import java.util.*;
 import primerobligatoriop2.Utilidades.*;
+import javax.sound.sampled.*;
+import java.io.IOException;
 
 public class PrimerObligatorioP2 {
 
@@ -23,19 +25,18 @@ public class PrimerObligatorioP2 {
             boolean finJuego = false;
             for (int i = 0; i < mat.length; i++) {
                 for (int j = 0; j < mat[0].length; j++) {
-                    mat[i][j] = "0";
+                    mat[i][j] = " ";
                 }
             }
 
             if (ingresoMenu.charAt(0) == 'R') {
                 Perfiles.registrarJugador(personas);
             }
-            
-            if(ingresoMenu.charAt(0) == 'D'){
-            //reporte de pdf
-            
+
+            if (ingresoMenu.charAt(0) == 'D') {
+                //reporte de pdf
             }
-            
+
             if (ingresoMenu.charAt(0) == 'S') {
                 if (personas.size() >= 2) {
                     for (int i = 0; i < personas.size(); i++) {
@@ -93,6 +94,13 @@ public class PrimerObligatorioP2 {
                             MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
                             MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
                             saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
+                            if (saltoGatitos.length() > 0) {
+                                try {
+                                    Sonidos.reproducirSonido();
+                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
                             cajaJugadores[0]--;
                         } else {
@@ -125,25 +133,19 @@ public class PrimerObligatorioP2 {
                             MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "azul");
                             MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
                             saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
+                            if (saltoGatitos.length() > 0) {
+                                try {
+                                    Sonidos.reproducirSonido();
+                                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
                             cajaJugadores[2]--;
                         }
 
                         //RENDER DE LA MATRIZ SEGUN COLOR
-                        for (int i = 0; i < mat.length; i++) {
-                            for (int j = 0; j < mat[0].length; j++) {
-                                if (mat[i][j].contains("rojo")) {
-                                    System.out.print("\u001B[31m" + mat[i][j].charAt(0) + " ");
-                                } else {
-                                    System.out.print("\u001B[34m" + mat[i][j].charAt(0) + " ");
-                                }
-                            }
-                            System.out.println();
-                        }
-
-                        System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
-                        System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
-
+                        estilosMatriz(2, mat, cajaJugadores);
                         contadorTurnos++;
 
                         if (hayGanador(mat).length() > 1) {
@@ -202,6 +204,13 @@ public class PrimerObligatorioP2 {
 
                                 MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
                                 saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
+                                if (saltoGatitos.length() > 0) {
+                                    try {
+                                        Sonidos.reproducirSonido();
+                                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
                                 cajaJugadores[0]--;
                                 contadorTurnos++;
@@ -267,6 +276,13 @@ public class PrimerObligatorioP2 {
                                 }
                                 MovimientoGatitos.colocarGato(coordenadas[0], coordenadas[1], mat, "rojo");
                                 saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "G");
+                                if (saltoGatitos.length() > 0) {
+                                    try {
+                                        Sonidos.reproducirSonido();
+                                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
                                 cajaJugadores[1]--;
                                 contadorTurnos++;
@@ -816,4 +832,73 @@ public class PrimerObligatorioP2 {
         return gano;
     }
 
+    public static void estilosMatriz(int numeroDeEstilo, String[][] mat, int[] cajaJugadores) {
+
+        if (numeroDeEstilo == 1) {
+            for (int i = 0; i < mat.length; i++) {
+                System.out.println("+-------+-------+-------+-------+-------+-------+");
+                System.out.println("|       |       |       |       |       |       |");
+                for (int j = 0; j < mat[0].length; j++) {
+                    if (mat[i][j].contains("rojo")) {
+                        System.out.print("| " + "\u001B[31m" + "  " + mat[i][j].charAt(0) + "   " + "\u001B[0m");
+                    } else if (mat[i][j].contains("azul")) {
+                        System.out.print("| " + "\u001B[34m" + "  " + mat[i][j].charAt(0) + "   " + "\u001B[0m");
+                    } else {
+                        System.out.print("|       ");
+                    }
+                    if (j == (mat[0].length - 1)) {
+                        System.out.println("|");
+                    }
+                }
+                System.out.println("|       |       |       |       |       |       |");
+            }
+            System.out.println("+-------+-------+-------+-------+-------+-------+");
+            System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
+            System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
+            System.out.println(cajaJugadores[1] + " rojo");
+            System.out.println(cajaJugadores[3] + " azul");
+
+        }
+        if (numeroDeEstilo == 2) {
+            for (int i = 0; i < mat.length; i++) {
+                System.out.println("   +-------+-------+-------+-------+-------+-------+");
+                System.out.println("   | * * * | * * * | * * * | * * * | * * * | * * * |");
+                for (int j = 0; j < mat[0].length; j++) {
+
+                    if (mat[i][j].contains("rojo")) {
+                        if (j == 0) {
+                            System.out.print(i + "\u001B[0m" + "  | *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        } else {
+                            System.out.print("| *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        }
+                    } else if (mat[i][j].contains("azul")) {
+                        if (j == 0) {
+                            System.out.print(i + "\u001B[0m" + "  | *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        } else {
+                            System.out.print("\u001B[0m" + "| *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        }
+                    } else {
+                        if (j == 0) {
+                            System.out.print(i + "\u001B[0m" + "  | *   * ");
+                        } else {
+                            System.out.print("\u001B[0m" + "| *   * ");
+                        }
+                    }
+                    if (j == (mat[0].length - 1)) {
+                        System.out.println("|");
+                    }
+                }
+                System.out.println("   | * * * | * * * | * * * | * * * | * * * | * * * |");
+            }
+        }
+        System.out.println("   +-------+-------+-------+-------+-------+-------+");
+        System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
+        System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
+        System.out.println(cajaJugadores[1] + " rojo");
+        System.out.println(cajaJugadores[3] + " azul");
+
+    }
+
 }
+
+

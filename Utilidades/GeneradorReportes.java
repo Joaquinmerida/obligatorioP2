@@ -3,12 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package primerobligatoriop2.Utilidades;
-import org.apache.pdfbox.pdmodel.PDPage;
+
+import java.io.IOException;
+import java.util.*;
+
+
 /**
  *
  * @author joaquinmerida
  */
 public class GeneradorReportes {
-    
-    
+        
+       
+public static void crearPDF(ArrayList<Perfiles> listaPersonas) throws IOException {
+
+    }
 }
+
+
