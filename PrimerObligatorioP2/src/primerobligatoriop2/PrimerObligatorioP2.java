@@ -11,6 +11,7 @@ public class PrimerObligatorioP2 {
         Boolean saleDelSistema = false;
         ArrayList<Perfiles> personas = new ArrayList<>();
         ArrayList<Perfiles> personasAuxiliar = new ArrayList<>();
+        char seleccionGato = 0;
 
         while (!saleDelSistema) {
             String ingresoMenu = "";
@@ -150,7 +151,7 @@ public class PrimerObligatorioP2 {
                         }
 
                         //RENDER DE LA MATRIZ SEGUN COLOR
-                        estilosMatriz(2, mat, cajaJugadores);
+                        estilosMatriz(3, mat, cajaJugadores);
                         contadorTurnos++;
 
                         if (hayGanador(mat).length() > 1) {
@@ -170,198 +171,172 @@ public class PrimerObligatorioP2 {
                 finJuego = false;
 
                 if (personas.size() >= 2) {
+
+                    for (int i = 0; i < personas.size(); i++) {
+                        System.out.println(i + " - " + personas.get(i).getNombre());
+                    }
+                    System.out.println("Jugador rojo, seleccione su perfil:");
+                    seleccionJugador = input.nextInt();
+                    while (!(seleccionJugador >= 0 && seleccionJugador < personas.size())) {
+                        System.out.println("Jugador rojo, seleccione su perfil");
+                        seleccionJugador = input.nextInt();
+                    }
+                    Perfiles.sumarPartida(personas, personas.get(seleccionJugador).getAlias());
+                    personasAuxiliar.clear();
+                    personasAuxiliar.addAll(personas);
+                    personasAuxiliar.remove(seleccionJugador);
+                    for (int i = 0; i < personasAuxiliar.size(); i++) {
+                        System.out.println(i + " - " + personasAuxiliar.get(i).getNombre());
+                    }
+                    System.out.println("Jugador azul, seleccione su perfil:");
+                    seleccionJugador = input.nextInt();
+
+                    while (!(seleccionJugador >= 0 && seleccionJugador < personasAuxiliar.size())) {
+                        System.out.println("Jugador azul, seleccione su perfil");
+                        seleccionJugador = input.nextInt();
+                    }
+                    Perfiles.sumarPartida(personasAuxiliar, personasAuxiliar.get(seleccionJugador).getAlias());
+                    
                     while (!finJuego) {
                         if (contadorTurnos % 2 == 0) {
+                            int[] coordenadas = new int[2];
                             //TURNO DE ROJO
                             if (cajaJugadores[1] > 0) {
-                                // SI TIENE GATO GRANDE
-                                System.out.println("Ingrese  -g-  para colocar un gatito");
-                                System.out.println("Ingrese -G- para colocar un gato");
-                                inputJugador = input.next();
+                                // SI TIENE GATO GRANDE         
+                                System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gato");
+                                String coordenadaX;
+                                int coordenadaY;
+                                String letrasCheck = "ABCDEFabcdef";
+                                boolean coordenadasValidas = false;
+                                boolean coordenadasDisponibles = false;
+                                do {
+                                    String inputt = input.next();
+                                    if (inputt.length() == 3) {
+                                        coordenadaX = String.valueOf(inputt.charAt(0));
+                                        coordenadaY = Character.getNumericValue(inputt.charAt(1));
+                                        seleccionGato = inputt.charAt(2);
+                                        boolean xBien = letrasCheck.contains(coordenadaX);
+                                        boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                                        boolean gBien = seleccionGato == 'g' || seleccionGato == 'G';
+                                        if (xBien && yBien && gBien) {
+                                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                            coordenadasValidas = true;
+                                            if (!MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && !MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
+                                                coordenadasDisponibles = true;
+                                            } else {
+                                                System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
+                                            }
+                                        } else {
+                                            System.out.println("Coordenadas incorrectas10");
+                                        }
+                                    } else {
+                                        System.out.println("Coordenadas incorrectas2");
+                                    }
+                                } while (!coordenadasValidas || !coordenadasDisponibles);
                             } else {
                                 //SI NO TIENE GATO GRANDE    
                                 System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                String coordenadaX;
+                                int coordenadaY;
                                 String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                System.out.println(coordenadaX);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-
-                                MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
-                                saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
-                                if (saltoGatitos.length() > 0) {
-                                    try {
-                                        Sonidos.reproducirSonido();
-                                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                                        e.printStackTrace();
+                                boolean coordenadasValidas = false;
+                                boolean coordenadasDisponibles = false;
+                                do {
+                                    String inputt = input.next();
+                                    if (inputt.length() == 3) {
+                                        coordenadaX = String.valueOf(inputt.charAt(0));
+                                        coordenadaY = Character.getNumericValue(inputt.charAt(1));
+                                        seleccionGato = inputt.charAt(2);
+                                        boolean xBien = letrasCheck.contains(coordenadaX);
+                                        boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                                        boolean gBien = seleccionGato == 'g';
+                                        if (xBien && yBien && gBien) {
+                                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                            coordenadasValidas = true;
+                                            if (!MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && !MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
+                                                coordenadasDisponibles = true;
+                                            } else {
+                                                System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
+                                            }
+                                        } else {
+                                            System.out.println("Coordenadas incorrectas1");
+                                        }
+                                    } else {
+                                        System.out.println("Coordenadas incorrectas2");
                                     }
-                                }
-                                MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
-                                cajaJugadores[0]--;
-                                contadorTurnos++;
+                                } while (!coordenadasValidas || !coordenadasDisponibles);
                             }
 
-                            if (inputJugador.contains("g")) {
-                                System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                            if (seleccionGato == 'g') {
+                                if (cajaJugadores[0] > 0) {
+                                    MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
+                                    saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
+                                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
+                                    cajaJugadores[0]--;
+                                    contadorTurnos++;
+                                } else {
+                                    System.out.println("No tienes mas gatitos!");
                                 }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-                                MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "rojo");
-                                saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
-                                MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
-                                cajaJugadores[0]--;
-                                contadorTurnos++;
                             }
-
-                            if (inputJugador.contains("G")) {
-                                System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gato");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR ROJO: Coloque las coordenadas del nuevo gato");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gato");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-                                MovimientoGatitos.colocarGato(coordenadas[0], coordenadas[1], mat, "rojo");
-                                saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "G");
-                                if (saltoGatitos.length() > 0) {
-                                    try {
-                                        Sonidos.reproducirSonido();
-                                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                                        e.printStackTrace();
+                            if (seleccionGato == 'G') {
+                                if (cajaJugadores[1] > 0) {
+                                    MovimientoGatitos.colocarGato(coordenadas[0], coordenadas[1], mat, "rojo");
+                                    saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "G");
+                                    if (saltoGatitos.length() > 0) {
+                                        try {
+                                            Sonidos.reproducirSonido();
+                                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
+                                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
+                                    cajaJugadores[1]--;
+                                    contadorTurnos++;
+                                } else {
+                                    System.out.println("No tienes mas gatos!");
                                 }
-                                MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
-                                cajaJugadores[1]--;
-                                contadorTurnos++;
                             }
 
                             Boolean finalPor8Gatos = false;
 
-                            if (cajaJugadores[0] == 0 && cajaJugadores[1] == 0) {
-                                finalPor8Gatos = todoGatosGrandes(mat, "rojo");
-
+                            if (cajaJugadores[2] < 8 && cajaJugadores[3] == 0) {
+                                finalPor8Gatos = todoGatosGrandes(mat, "azul");
                                 if (!finalPor8Gatos) {
                                     Boolean jugadaCorrecta = false;
-
+                                    estilosMatriz(2, mat, cajaJugadores);
                                     while (!jugadaCorrecta) {
-                                        System.out.println("JUGADOR ROJO: te has quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
+                                        System.out.println("JUGADOR AZUL: te  quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
                                         System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
                                         System.out.println("RA1 + coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
                                         System.out.println("RA2 + coordenadas= Quitar un gato de la colcha y guardarlo en la caja");
                                         String inputReglasAdicionales = input.next();
-
                                         String letrasCheck = "ABCDEFabcdef";
                                         System.out.println("compara" + inputReglasAdicionales.substring(3, 4) + "numero" + Character.getNumericValue(inputReglasAdicionales.charAt(4)));
                                         Boolean xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
                                         Boolean yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
                                         System.out.println(xBien + " " + yBien);
-
                                         if (xBien && yBien) {
-                                            int[] coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
+                                            coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
                                             if (inputReglasAdicionales.contains("RA1")) {
                                                 if (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("azul")) {
                                                     MovimientoGatitos.sacaConCoordenadas(mat, coordenadas[0], coordenadas[1]);
                                                     cajaJugadores[3]++;
                                                     jugadaCorrecta = true;
-                                                    //FALTA AGREGAR PARA PASAR DE TURNO
-                                                    break;
+                                                    continue;
                                                 } else {
                                                     System.out.println("No hay gatito en esas cordenadas");
                                                 }
-
                                             }
                                             if (inputReglasAdicionales.contains("RA2")) {
                                                 if (MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("azul")) {
                                                     MovimientoGatitos.sacaConCoordenadas(mat, coordenadas[0], coordenadas[1]);
+                                                    contadorTurnos++;
                                                     cajaJugadores[3]++;
                                                     jugadaCorrecta = true;
                                                 } else {
                                                     System.out.println("No hay un gato en esa posicion");
                                                 }
                                             }
-
-                                        }
-                                    }
-                                    while (!jugadaCorrecta) {
-                                        System.out.println("JUGADOR ROJO: te has quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
-                                        System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
-                                        System.out.println("RA1 + coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
-                                        System.out.println("RA2 + coordenadas= Quitar un gato de la colcha y guardarlo en la caja");
-                                        String inputReglasAdicionales = input.next();
-
-                                        String letrasCheck = "ABCDEFabcdefg";
-                                        System.out.println("compara" + inputReglasAdicionales.substring(3, 4) + "numero" + Character.getNumericValue(inputReglasAdicionales.charAt(4)));
-                                        Boolean xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
-                                        Boolean yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
-                                        System.out.println(xBien + " " + yBien);
-
-                                        while ((!inputReglasAdicionales.contains("RA1") && !inputReglasAdicionales.contains("RA2")) || inputReglasAdicionales.length() != 5) {
-                                            System.out.println("JUGADOR ROJO: te has quedado sin gatitos ni gatos.");
-                                            System.out.println("Solo puedes usar las reglas adicionales");
-                                            System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
-                                            System.out.println("RA1+ coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
-                                            System.out.println("RA2+ coordenadas = Quitar un gato de la colcha y guardarlo en la caja");
-                                            inputReglasAdicionales = input.next();
-                                            xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
-                                            yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
                                         }
                                     }
                                 } else {
@@ -371,42 +346,79 @@ public class PrimerObligatorioP2 {
                             }
                             inputJugador = "";
                         } else {
-
+                            int[] coordenadas = new int[2];
                             //TURNO DE AZUL
-                            if (cajaJugadores[3] > 0) {
-                                // SI TIENE GATO GRANDE
-                                System.out.println("Ingrese  -g-  para colocar un gatito");
-                                System.out.println("Ingrese -G- para colocar un gato");
-                                inputJugador = input.next();
+                            if (cajaJugadores[1] > 0) {
+                                // SI TIENE GATO GRANDE         
+                                System.out.println("JUGADOR  AZUL: Coloque las coordenadas del nuevo gatito");
+                                String coordenadaX;
+                                int coordenadaY;
+                                String letrasCheck = "ABCDEFabcdef";
+                                boolean coordenadasValidas = false;
+                                boolean coordenadasDisponibles = false;
+                                do {
+                                    String inputt = input.next();
+                                    if (inputt.length() == 3) {
+                                        coordenadaX = String.valueOf(inputt.charAt(0));
+                                        coordenadaY = Character.getNumericValue(inputt.charAt(1));
+                                        seleccionGato = inputt.charAt(2);
+                                        boolean xBien = letrasCheck.contains(coordenadaX);
+                                        boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                                        boolean gBien = seleccionGato == 'g' || seleccionGato == 'G';
+                                        if (xBien && yBien && gBien) {
+                                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                            coordenadasValidas = true;
+                                            if (!MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && !MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
+                                                coordenadasDisponibles = true;
+                                            } else {
+                                                System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
+                                            }
+                                        } else {
+                                            System.out.println("Coordenadas incorrectas1");
+                                        }
+                                    } else {
+                                        System.out.println("Coordenadas incorrectas2");
+                                    }
+                                } while (!coordenadasValidas || !coordenadasDisponibles);
                             } else {
                                 //SI NO TIENE GATO GRANDE    
-                                System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                System.out.println("JUGADOR Azul: Coloque las coordenadas del nuevo gatito");
+                                String coordenadaX;
+                                int coordenadaY;
                                 String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                System.out.println(coordenadaX);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                boolean coordenadasValidas = false;
+                                boolean coordenadasDisponibles = false;
+                                do {
+                                    String inputt = input.next();
+                                    if (inputt.length() == 3) {
+                                        coordenadaX = String.valueOf(inputt.charAt(0));
+                                        coordenadaY = Character.getNumericValue(inputt.charAt(1));
+                                        seleccionGato = inputt.charAt(2);
+                                        boolean xBien = letrasCheck.contains(coordenadaX);
+                                        boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                                        boolean gBien = seleccionGato == 'g';
+                                        if (xBien && yBien && gBien) {
+                                            coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
+                                            coordenadasValidas = true;
+                                            if (!MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && !MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
+                                                coordenadasDisponibles = true;
+                                            } else {
+                                                System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
+                                            }
+                                        } else {
+                                            if (seleccionGato == 'G') {
+                                                System.out.println("No tienes ningun gato en la caja");
+                                            } else {
+                                                System.out.println("Coordenadas incorrectas1");
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("Coordenadas incorrectas2");
+                                    }
+                                } while (!coordenadasValidas || !coordenadasDisponibles);
+                            }
 
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-
+                            if (seleccionGato == 'g') {
                                 MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "azul");
                                 saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
                                 MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
@@ -414,81 +426,36 @@ public class PrimerObligatorioP2 {
                                 contadorTurnos++;
                             }
 
-                            if (inputJugador.contains("g")) {
-                                System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
+                            if (seleccionGato == 'G') {
+                                if (cajaJugadores[3] > 0) {
+                                    MovimientoGatitos.colocarGato(coordenadas[0], coordenadas[1], mat, "azul");
+                                    saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "G");
+                                    if (saltoGatitos.length() > 0) {
+                                        try {
+                                            Sonidos.reproducirSonido();
+                                        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
+                                    cajaJugadores[3]--;
+                                    contadorTurnos++;
+                                } else {
+                                    System.out.println("JUGADOR AZUL: No tienes gatos en tu caja");
                                 }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
 
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gatito");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-                                MovimientoGatitos.colocarGatito(coordenadas[0], coordenadas[1], mat, "azul");
-                                saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "g");
-                                MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
-                                cajaJugadores[2]--;
-                                contadorTurnos++;
-                            }
-
-                            if (inputJugador.contains("G")) {
-                                System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gato");
-                                String coordenadaX = input.next();
-                                int coordenadaY = input.nextInt();
-                                int[] coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                String letrasCheck = "ABCDEFabcdef";
-                                Boolean xBien = letrasCheck.contains(coordenadaX);
-                                Boolean yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                System.out.println(xBien + " " + yBien);
-                                while (!(xBien && yBien)) {
-                                    System.out.println("Coordenadas incorrectas");
-                                    System.out.println("JUGADOR AZUL: Coloque las coordenadas del nuevo gato");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                    xBien = letrasCheck.contains(coordenadaX);
-                                    yBien = (coordenadaY >= 0 && coordenadaY <= 5);
-                                }
-                                coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                while (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat)) {
-                                    System.out.println("YA HAY UN GATITO EN ESA CASILLA, VUELVA A COLOCAR las coordenadas del nuevo gato");
-                                    coordenadaX = input.next();
-                                    coordenadaY = input.nextInt();
-                                    coordenadas = MovimientoGatitos.getCoordenadas(coordenadaX, coordenadaY);
-                                }
-                                MovimientoGatitos.colocarGato(coordenadas[0], coordenadas[1], mat, "azul");
-                                saltoGatitos = MovimientoGatitos.seMueve(coordenadas[0], coordenadas[1], mat, "G");
-                                MovimientoGatitos.saltoGato(saltoGatitos, coordenadas[0], coordenadas[1], mat, cajaJugadores);
-                                cajaJugadores[3]--;
-                                contadorTurnos++;
                             }
 
                             Boolean finalPor8Gatos = false;
 
-                            if (cajaJugadores[2] == 8 && cajaJugadores[3] == 0) {
+                            if (cajaJugadores[0] < 8 && cajaJugadores[1] == 0) {
                                 finalPor8Gatos = todoGatosGrandes(mat, "azul");
 
                                 if (!finalPor8Gatos) {
                                     Boolean jugadaCorrecta = false;
 
                                     while (!jugadaCorrecta) {
-                                        System.out.println("JUGADOR AZUL: te has quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
+                                        System.out.println("JUGADOR ROJO: te has quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
                                         System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
                                         System.out.println("RA1 + coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
                                         System.out.println("RA2 + coordenadas= Quitar un gato de la colcha y guardarlo en la caja");
@@ -501,11 +468,11 @@ public class PrimerObligatorioP2 {
                                         System.out.println(xBien + " " + yBien);
 
                                         if (xBien && yBien) {
-                                            int[] coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
+                                            coordenadas = MovimientoGatitos.getCoordenadas(inputReglasAdicionales.substring(3, 4), Character.getNumericValue(inputReglasAdicionales.charAt(4)));
                                             if (inputReglasAdicionales.contains("RA1")) {
-                                                if (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("azul")) {
+                                                if (MovimientoGatitos.yaHayGatito(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("rojo")) {
                                                     MovimientoGatitos.sacaConCoordenadas(mat, coordenadas[0], coordenadas[1]);
-                                                    cajaJugadores[3]++;
+                                                    cajaJugadores[1]++;
                                                     jugadaCorrecta = true;
                                                     //FALTA AGREGAR PARA PASAR DE TURNO
                                                     break;
@@ -515,91 +482,48 @@ public class PrimerObligatorioP2 {
 
                                             }
                                             if (inputReglasAdicionales.contains("RA2")) {
-                                                if (MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("azul")) {
+                                                if (MovimientoGatitos.yaHayGato(coordenadas[0], coordenadas[1], mat) && mat[coordenadas[0]][coordenadas[1]].contains("rojo")) {
                                                     MovimientoGatitos.sacaConCoordenadas(mat, coordenadas[0], coordenadas[1]);
-                                                    cajaJugadores[3]++;
+                                                    cajaJugadores[1]++;
                                                     jugadaCorrecta = true;
                                                 } else {
                                                     System.out.println("No hay un gato en esa posicion");
                                                 }
                                             }
-
-                                        }
-                                    }
-                                    while (!jugadaCorrecta) {
-                                        System.out.println("JUGADOR AZUL: te has quedado sin gatitos ni gatos. Solo puedes usar las reglas adicionales");
-                                        System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
-                                        System.out.println("RA1 + coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
-                                        System.out.println("RA2 + coordenadas= Quitar un gato de la colcha y guardarlo en la caja");
-                                        String inputReglasAdicionales = input.next();
-
-                                        String letrasCheck = "ABCDEFabcdef";
-                                        System.out.println("compara" + inputReglasAdicionales.substring(3, 4) + "numero" + Character.getNumericValue(inputReglasAdicionales.charAt(4)));
-                                        Boolean xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
-                                        Boolean yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
-                                        System.out.println(xBien + " " + yBien);
-
-                                        while ((!inputReglasAdicionales.contains("RA1") && !inputReglasAdicionales.contains("RA2")) || inputReglasAdicionales.length() != 5) {
-                                            System.out.println("JUGADOR AZUL: te has quedado sin gatitos ni gatos.");
-                                            System.out.println("Solo puedes usar las reglas adicionales");
-                                            System.out.println("Ingresa RA1 o RA2 para utilizar las reglas adicionales");
-                                            System.out.println("RA1+ coordenadas = Quitar un gatito de la colcha y convertirlo en gato");
-                                            System.out.println("RA2+ coordenadas = Quitar un gato de la colcha y guardarlo en la caja");
-                                            inputReglasAdicionales = input.next();
-                                            xBien = letrasCheck.contains(inputReglasAdicionales.substring(3, 4));
-                                            yBien = (Character.getNumericValue(inputReglasAdicionales.charAt(4)) >= 0 && Character.getNumericValue(inputReglasAdicionales.charAt(4)) <= 5);
                                         }
                                     }
                                 } else {
-                                    System.out.println("Gano jugador azul porque tiene 8 gatos en caja");
+                                    System.out.println("Gano jugador rojo porque tiene 8 gatos en caja");
                                     finJuego = true;
                                 }
                             }
                             inputJugador = "";
-
                         }
-
+                        estilosMatriz(2, mat, cajaJugadores);
                         if (hayGanador(mat).length() > 5) {
                             String color = hayGanador(mat).substring(0, 4);
                             String datosGanador = hayGanador(mat).substring(5);
-                            String[] coordenadas = datosGanador.split(" ");
-                            System.out.println(tieneGatoGrande(mat, coordenadas));
+                            String[] coordenadasGanador = datosGanador.split(" ");
+                            System.out.println(tieneGatoGrande(mat, coordenadasGanador));
                             MovimientoGatitos.agregaGatoACaja(color, cajaJugadores, 3);
-                            Boolean ganoFull = tieneGatoGrande(mat, coordenadas) == 3;
-                            MovimientoGatitos.desaparecerGatitos(mat, coordenadas);
+                            Boolean ganoFull = tieneGatoGrande(mat, coordenadasGanador) == 3;
+                            MovimientoGatitos.desaparecerGatitos(mat, coordenadasGanador);
                             if (ganoFull) {
                                 System.out.println(color + " GANO CON GATOS GRANDES");
                                 finJuego = true;
                             }
                         }
-
-                        for (int i = 0; i < mat.length; i++) {
-                            for (int j = 0; j < mat[0].length; j++) {
-                                if (mat[i][j].contains("rojo")) {
-                                    System.out.print("\u001B[31m" + mat[i][j].charAt(0) + " ");
-                                } else {
-                                    System.out.print("\u001B[34m" + mat[i][j].charAt(0) + " ");
-                                }
-                            }
-                            System.out.println();
-                        }
-                        System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
-                        System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
-                        System.out.println(cajaJugadores[1] + " rojo");
-                        System.out.println(cajaJugadores[3] + " azul");
                     }
                 } else {
                     System.out.println("No hay suficientes jugadores registrados");
                 }
             }
-
             //termina todo sale del menu
             if (ingresoMenu.charAt(0) == 'E') {
                 saleDelSistema = true;
             }
             ingresoMenu = "";
         }
-
     }
 
     public static String hayGanador(String[][] mat) {
@@ -612,7 +536,6 @@ public class PrimerObligatorioP2 {
         String coordenadas = "";
         for (int i = 0; i < mat.length && !hayGanador; i++) {
             for (int j = 0; j < mat[0].length && !hayGanador; j++) {
-
                 if (mat[i][j].charAt(0) == 'g' || mat[i][j].charAt(0) == 'G') {
                     color = mat[i][j].substring(1);
                     if (j + 2 <= mat[0].length - 1) {
@@ -631,8 +554,6 @@ public class PrimerObligatorioP2 {
                             diagonalArribaAbajoDerechaIzquierda = (mat[i + 1][j - 1].charAt(0) == 'g' || mat[i + 1][j - 1].charAt(0) == 'G') && mat[i + 1][j - 1].contains(color) && (mat[i + 2][j - 2].charAt(0) == 'g' || mat[i + 2][j - 2].charAt(0) == 'G') && mat[i + 2][j - 2].contains(color);
                         }
                     }
-                    //diagonalArribaAbajoIzquierdaDerecha = mat[i + 1][j + 1].charAt(0) == 'g' && mat[i + 1][j + 1].contains(color) && (mat[i + 2][j + 2].charAt(0) == 'g' && mat[i + 2][j + 2].contains(color));
-                    //diagonalArribaAbajoDerechaIzquierda = mat[i + 1][j - 1].charAt(0) == 'g' && mat[i + 1][j - 1].contains(color) && (mat[i + 2][j - 2].charAt(0) == 'g' && mat[i + 2][j - 2].contains(color));
                     //arriba a la izquierda pronto
                     if (i == 0 && j == 0) {
                         if (horizontal) {
@@ -919,7 +840,62 @@ public class PrimerObligatorioP2 {
                 System.out.println("   | * * * | * * * | * * * | * * * | * * * | * * * |");
             }
         }
-        System.out.println("   +-------+-------+-------+-------+-------+-------+");
+
+        if (numeroDeEstilo == 3) {
+            for (int i = 0; i < mat.length; i++) {
+                if (i == 0) {
+                    numeroALetra = "A";
+                }
+                if (i == 1) {
+                    numeroALetra = "B";
+                }
+                if (i == 2) {
+                    numeroALetra = "C";
+                }
+                if (i == 3) {
+                    numeroALetra = "D";
+                }
+                if (i == 4) {
+                    numeroALetra = "E";
+                }
+                if (i == 5) {
+                    numeroALetra = "F";
+                }
+
+                if (i == 0) {
+                    System.out.println("       0       1       2       3       4       5 ");
+                }
+                System.out.println("   VXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXV");
+                System.out.println("   X * * * X * * * X * * * X * * * X * * * X * * * X");
+                for (int j = 0; j < mat[0].length; j++) {
+
+                    if (mat[i][j].contains("rojo")) {
+                        if (j == 0) {
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  X *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        } else {
+                            System.out.print("X *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        }
+                    } else if (mat[i][j].contains("azul")) {
+                        if (j == 0) {
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  X *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        } else {
+                            System.out.print("\u001B[0m" + "X *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                        }
+                    } else {
+                        if (j == 0) {
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  X *   * ");
+                        } else {
+                            System.out.print("\u001B[0m" + "X *   * ");
+                        }
+                    }
+                    if (j == (mat[0].length - 1)) {
+                        System.out.println("X");
+                    }
+                }
+                System.out.println("   X * * * X * * * X * * * X * * * X * * * X * * * X");
+            }
+        }
+        System.out.println("   VXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXVXXXXXXXV");
         System.out.println("\u001B[31m" + "GATITOS RESTANTES: " + cajaJugadores[0]);
         System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
         System.out.println(cajaJugadores[1] + " rojo");
