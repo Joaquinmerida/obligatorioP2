@@ -34,7 +34,11 @@ public class PrimerObligatorioP2 {
             }
 
             if (ingresoMenu.charAt(0) == 'D') {
-                //reporte de pdf
+                try {
+                    GeneradorReportes.GenerarPDF(personas);
+                } catch (Exception e) {
+                    System.out.println("no se pudo generar pdf");
+                }
             }
 
             if (ingresoMenu.charAt(0) == 'S') {
@@ -49,6 +53,7 @@ public class PrimerObligatorioP2 {
                         seleccionJugador = input.nextInt();
                     }
                     Perfiles.sumarPartida(personas, personas.get(seleccionJugador).getAlias());
+                    personasAuxiliar.clear();
                     personasAuxiliar.addAll(personas);
                     personasAuxiliar.remove(seleccionJugador);
                     for (int i = 0; i < personasAuxiliar.size(); i++) {
@@ -61,7 +66,7 @@ public class PrimerObligatorioP2 {
                         System.out.println("Jugador azul, seleccione su perfil");
                         seleccionJugador = input.nextInt();
                     }
-                    Perfiles.sumarPartida(personas, personas.get(seleccionJugador).getAlias());
+                    Perfiles.sumarPartida(personasAuxiliar, personasAuxiliar.get(seleccionJugador).getAlias());
 
                     while (!finJuego) {
                         if (contadorTurnos % 2 == 0) {
@@ -833,6 +838,7 @@ public class PrimerObligatorioP2 {
     }
 
     public static void estilosMatriz(int numeroDeEstilo, String[][] mat, int[] cajaJugadores) {
+        String numeroALetra = "";
 
         if (numeroDeEstilo == 1) {
             for (int i = 0; i < mat.length; i++) {
@@ -861,25 +867,47 @@ public class PrimerObligatorioP2 {
         }
         if (numeroDeEstilo == 2) {
             for (int i = 0; i < mat.length; i++) {
+                if (i == 0) {
+                    numeroALetra = "A";
+                }
+                if (i == 1) {
+                    numeroALetra = "B";
+                }
+                if (i == 2) {
+                    numeroALetra = "C";
+                }
+                if (i == 3) {
+                    numeroALetra = "D";
+                }
+                if (i == 4) {
+                    numeroALetra = "E";
+                }
+                if (i == 5) {
+                    numeroALetra = "F";
+                }
+
+                if (i == 0) {
+                    System.out.println("       0       1       2       3       4       5 ");
+                }
                 System.out.println("   +-------+-------+-------+-------+-------+-------+");
                 System.out.println("   | * * * | * * * | * * * | * * * | * * * | * * * |");
                 for (int j = 0; j < mat[0].length; j++) {
 
                     if (mat[i][j].contains("rojo")) {
                         if (j == 0) {
-                            System.out.print(i + "\u001B[0m" + "  | *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  | *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
                         } else {
                             System.out.print("| *" + "\u001B[31m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
                         }
                     } else if (mat[i][j].contains("azul")) {
                         if (j == 0) {
-                            System.out.print(i + "\u001B[0m" + "  | *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  | *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
                         } else {
                             System.out.print("\u001B[0m" + "| *" + "\u001B[34m" + " " + mat[i][j].charAt(0) + "\u001B[0m" + " * ");
                         }
                     } else {
                         if (j == 0) {
-                            System.out.print(i + "\u001B[0m" + "  | *   * ");
+                            System.out.print("\u001B[0m" + numeroALetra + "\u001B[0m" + "  | *   * ");
                         } else {
                             System.out.print("\u001B[0m" + "| *   * ");
                         }
@@ -896,9 +924,5 @@ public class PrimerObligatorioP2 {
         System.out.println("\u001B[34m" + "GATITOS RESTANTES: " + cajaJugadores[2]);
         System.out.println(cajaJugadores[1] + " rojo");
         System.out.println(cajaJugadores[3] + " azul");
-
     }
-
 }
-
-

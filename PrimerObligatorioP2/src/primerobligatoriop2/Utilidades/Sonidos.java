@@ -10,14 +10,12 @@ package primerobligatoriop2.Utilidades;
  */
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 import javax.sound.sampled.*;
 
 public class Sonidos {
 
     public static void reproducirSonido() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         String rutaArchivo = Sonidos.class.getResource("maullido.wav").getPath();
-        
         File file = new File(rutaArchivo);
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
         Clip clip = AudioSystem.getClip();
