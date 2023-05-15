@@ -70,14 +70,23 @@ public class Perfiles {
     public static void registrarJugador(ArrayList<Perfiles> personas) {
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese su nombre: ");
-        String nombre = input.nextLine();
-        System.out.println("Ingrese su edad: ");
-        int edad = input.nextInt();
+        String nombre = input.next();
+        int edad = 0;
+        boolean esEntero = false;
+        while (!esEntero) {
+            System.out.println("Ingrese su edad: ");
+            if (input.hasNextInt()) {
+                edad = input.nextInt();
+                esEntero = true;
+            } else {
+                System.out.println("No se ha ingresado un valor entero. Intente nuevamente.");
+                input.next();
+            }
+        }
         input.nextLine();
         System.out.println("Ingrese su alias: ");
         String alias = input.nextLine();
         if (Perfiles.esAliasUnico(personas, alias)) {
-            System.out.println("no existe");
             Perfiles nuevoPerfil = new Perfiles(nombre, edad, alias, 0);
             personas.add(nuevoPerfil);
             System.out.println("Jugador registrado con exito");

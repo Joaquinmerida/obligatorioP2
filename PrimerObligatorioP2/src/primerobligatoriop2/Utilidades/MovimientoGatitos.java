@@ -51,7 +51,6 @@ public class MovimientoGatitos {
         return hayGato;
     }
 
-
     static public void agregaGatitoACaja(String color, int[] caja) {
         if (color.contains("rojo")) {
             caja[0] = caja[0] + 1;
@@ -73,7 +72,6 @@ public class MovimientoGatitos {
     static public void desaparecerGatitos(String[][] matriz, String[] coordenadas) {
         for (int i = 0; i < coordenadas.length; i++) {
             matriz[(Character.getNumericValue(coordenadas[i].charAt(0)))][(Character.getNumericValue(coordenadas[i].charAt(1)))] = "0";
-            System.out.println((Character.getNumericValue(coordenadas[i].charAt(0))) + " " + Character.getNumericValue(coordenadas[i].charAt(1)));
         }
     }
 
@@ -291,12 +289,20 @@ public class MovimientoGatitos {
                 }
             } else {
                 if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("rojo")) {
-                    agregaGatitoACaja("rojo", cajaGatitos);
-                    System.out.println("mas un gato rojo");
+                    if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("G")) {
+                        agregaGatoACaja("rojo", cajaGatitos, 1);
+                    } else {
+                        agregaGatitoACaja("rojo", cajaGatitos);
+                    }
+
                 }
                 if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("azul")) {
-                    agregaGatitoACaja("azul", cajaGatitos);
-                    System.out.println("mas un gato azul");
+                    if (matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))].contains("G")) {
+                        agregaGatoACaja("azul", cajaGatitos, 1);
+                    } else {
+                        agregaGatitoACaja("azul", cajaGatitos);
+                    }
+
                 }
                 matriz[Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i))][Character.getNumericValue(coordenadasGatosQueSeMueven.charAt(i + 2))] = "0";
             }
